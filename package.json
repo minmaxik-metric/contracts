@@ -1,11 +1,15 @@
 {
   "name": "@citec-spbu/contracts",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Protobuf definitions and generated TypeScript types",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.js",
   "scripts": {
+    "build": "tsc -p tsconfig.build.json",
     "generate": "protoc -I ./proto ./proto/*.proto --ts_proto_out=./gen/ts --ts_proto_opt=nestJs=true,package=omit"
   },
   "files": [
+    "dist",
     "proto",
     "gen"
   ],
@@ -16,5 +20,9 @@
     "@nestjs/microservices": "^11.1.11",
     "rxjs": "^7.8.2",
     "ts-proto": "^2.10.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.6",
+    "typescript": "^5.9.3"
   }
 }
