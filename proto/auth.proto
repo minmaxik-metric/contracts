@@ -3,40 +3,40 @@ syntax = "proto3";
 package auth.v1;
 
 service AuthService {
-  rpc GithubInit(GithubInitRequest) returns (GithubInitResponse) {}
+  rpc GenerateJwt(GenerateJwtRequest) returns (GenerateJwtResponse);
 
-  rpc GithubCallback(GithubCallbackRequest) returns (GithubCallbackResponse) {}
+  rpc ValidateJwt(ValidateJwtRequest) returns (ValidateJwtResponse);
 
-  rpc Refresh(RefreshTokenRequest) returns (RefreshTokenResponse) {}
+  rpc Refresh(RefreshRequest) returns (RefreshResponse);
 }
 
-message GithubInitRequest {
-  string state = 1;
+message GenerateJwtRequest {
+  string provider = 1;
+  string provider_id = 2;
 }
 
-message GithubInitResponse {
-  string redirect_url = 1;
-}
-
-message GithubCallbackRequest {
-  string code = 1;
-  string state = 2;
-}
-
-message GithubCallbackResponse {
+message GenerateJwtResponse {
   TokenPair tokens = 1;
 }
 
-message RefreshTokenRequest {
+message ValidateJwtRequest {
+  string access_token = 1;
+}
+
+message ValidateJwtResponse {
+  bool valid = 1;
+  string account_id = 2;
+}
+
+message RefreshRequest {
   string refresh_token = 1;
 }
 
-message RefreshTokenResponse {
+message RefreshResponse {
   TokenPair tokens = 1;
 }
 
 message TokenPair {
   string access_token = 1;
   string refresh_token = 2;
-  int64 expires_in = 3;
 }
