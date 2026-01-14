@@ -3,19 +3,22 @@ syntax = "proto3";
 package auth.v1;
 
 service AuthService {
-  rpc GenerateJwt(GenerateJwtRequest) returns (GenerateJwtResponse);
+  rpc GithubLogin(GithubLoginRequest) returns (GithubLoginResponse);
 
   rpc ValidateJwt(ValidateJwtRequest) returns (ValidateJwtResponse);
 
   rpc Refresh(RefreshRequest) returns (RefreshResponse);
 }
 
-message GenerateJwtRequest {
-  string provider = 1;
+message GithubLoginRequest {
+  Provider provider = 1;
   string provider_id = 2;
+  string username = 3;
+  string profile_url = 4;
+  string avatar_url = 5;
 }
 
-message GenerateJwtResponse {
+message GithubLoginResponse {
   TokenPair tokens = 1;
 }
 
@@ -39,4 +42,9 @@ message RefreshResponse {
 message TokenPair {
   string access_token = 1;
   string refresh_token = 2;
+}
+
+enum Provider {
+  PROVIDER_UNSPECIFIED = 0;
+  PROVIDER_GITHUB = 1;
 }
