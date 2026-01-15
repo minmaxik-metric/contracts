@@ -28,7 +28,9 @@ message ValidateJwtRequest {
 
 message ValidateJwtResponse {
   bool valid = 1;
-  string account_id = 2;
+  oneof account {
+    string account_id = 2;
+  }
 }
 
 message RefreshRequest {
