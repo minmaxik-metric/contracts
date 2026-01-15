@@ -10,64 +10,71 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "auth.v1";
 
-export interface GithubInitRequest {
-  state: string;
+export enum Provider {
+  PROVIDER_UNSPECIFIED = 0,
+  PROVIDER_GITHUB = 1,
+  UNRECOGNIZED = -1,
 }
 
-export interface GithubInitResponse {
-  redirectUrl: string;
+export interface GithubLoginRequest {
+  provider: Provider;
+  providerId: string;
+  username: string;
+  profileUrl: string;
+  avatarUrl: string;
 }
 
-export interface GithubCallbackRequest {
-  code: string;
-  state: string;
-}
-
-export interface GithubCallbackResponse {
+export interface GithubLoginResponse {
   tokens: TokenPair | undefined;
 }
 
-export interface RefreshTokenRequest {
+export interface ValidateJwtRequest {
+  accessToken: string;
+}
+
+export interface ValidateJwtResponse {
+  valid: boolean;
+  accountId: string;
+}
+
+export interface RefreshRequest {
   refreshToken: string;
 }
 
-export interface RefreshTokenResponse {
+export interface RefreshResponse {
   tokens: TokenPair | undefined;
 }
 
 export interface TokenPair {
   accessToken: string;
   refreshToken: string;
-  expiresIn: number;
 }
 
 export const AUTH_V1_PACKAGE_NAME = "auth.v1";
 
 export interface AuthServiceClient {
-  githubInit(request: GithubInitRequest): Observable<GithubInitResponse>;
+  githubLogin(request: GithubLoginRequest): Observable<GithubLoginResponse>;
 
-  githubCallback(request: GithubCallbackRequest): Observable<GithubCallbackResponse>;
+  validateJwt(request: ValidateJwtRequest): Observable<ValidateJwtResponse>;
 
-  refresh(request: RefreshTokenRequest): Observable<RefreshTokenResponse>;
+  refresh(request: RefreshRequest): Observable<RefreshResponse>;
 }
 
 export interface AuthServiceController {
-  githubInit(
-    request: GithubInitRequest,
-  ): Promise<GithubInitResponse> | Observable<GithubInitResponse> | GithubInitResponse;
+  githubLogin(
+    request: GithubLoginRequest,
+  ): Promise<GithubLoginResponse> | Observable<GithubLoginResponse> | GithubLoginResponse;
 
-  githubCallback(
-    request: GithubCallbackRequest,
-  ): Promise<GithubCallbackResponse> | Observable<GithubCallbackResponse> | GithubCallbackResponse;
+  validateJwt(
+    request: ValidateJwtRequest,
+  ): Promise<ValidateJwtResponse> | Observable<ValidateJwtResponse> | ValidateJwtResponse;
 
-  refresh(
-    request: RefreshTokenRequest,
-  ): Promise<RefreshTokenResponse> | Observable<RefreshTokenResponse> | RefreshTokenResponse;
+  refresh(request: RefreshRequest): Promise<RefreshResponse> | Observable<RefreshResponse> | RefreshResponse;
 }
 
 export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["githubInit", "githubCallback", "refresh"];
+    const grpcMethods: string[] = ["githubLogin", "validateJwt", "refresh"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("AuthService", method)(constructor.prototype[method], method, descriptor);

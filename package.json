@@ -1,12 +1,26 @@
 {
   "name": "@citec-spbu/contracts",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Protobuf definitions and generated TypeScript types",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./gen/ts/auth": {
+      "types": "./dist/gen/ts/auth.d.ts",
+      "default": "./dist/gen/ts/auth.js"
+    },
+    "./gen/ts/account": {
+      "types": "./dist/gen/ts/account.d.ts",
+      "default": "./dist/gen/ts/account.js"
+    }
+  },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "generate": "protoc -I ./proto ./proto/*.proto --ts_proto_out=./gen/ts --ts_proto_opt=nestJs=true,package=omit"
+    "generate": "protoc -I ./proto ./proto/*.proto --ts_proto_out=./gen/ts --ts_proto_opt=nestJs=true,package=omit",
+    "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.gen.json"
   },
   "files": [
     "dist",
