@@ -19,6 +19,7 @@ jobs:
         with:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
 
       - run: sudo apt-get update && sudo apt-get install -y protobuf-compiler
       - run: yarn install --frozen-lockfile

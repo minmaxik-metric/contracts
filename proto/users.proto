@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package users.v1;
+
+service UsersService {
+  rpc GetMe(GetMeRequest) returns (GetMeResponse);
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+}
+
+message GetMeRequest {
+  string id = 1;
+}
+
+message GetMeResponse {
+  User user = 1;
+}
+
+message CreateUserRequest {
+  User user = 1;
+}
+
+message CreateUserResponse {
+  bool ok = 1;
+}
+
+message User {
+  string id = 1;
+  string username = 2;
+  string profile_url = 3;
+  string avatar_url = 4;
+}

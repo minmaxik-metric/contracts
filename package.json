@@ -1,6 +1,6 @@
 {
   "name": "@citec-spbu/contracts",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "Protobuf definitions and generated TypeScript types",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,33 +9,28 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./gen/ts/auth": {
-      "types": "./dist/gen/ts/auth.d.ts",
-      "default": "./dist/gen/ts/auth.js"
-    },
-    "./gen/ts/account": {
-      "types": "./dist/gen/ts/account.d.ts",
-      "default": "./dist/gen/ts/account.js"
+    "./gen/ts/*": {
+      "types": "./dist/gen/ts/*.d.ts",
+      "default": "./dist/gen/ts/*.js"
     }
   },
   "scripts": {
-    "generate": "protoc -I ./proto ./proto/*.proto --ts_proto_out=./gen/ts --ts_proto_opt=nestJs=true,package=omit",
+    "generate": "mkdir -p gen/ts && protoc -I ./proto ./proto/*.proto --ts_proto_out=./gen/ts --ts_proto_opt=nestJs=true,package=omit",
     "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.gen.json"
   },
   "files": [
     "dist",
-    "proto",
-    "gen"
+    "proto"
   ],
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
     "@nestjs/microservices": "^11.1.11",
-    "rxjs": "^7.8.2",
-    "ts-proto": "^2.10.1"
+    "rxjs": "^7.8.2"
   },
   "devDependencies": {
+    "ts-proto": "^2.10.1",
     "@types/node": "^25.0.6",
     "typescript": "^5.9.3"
   }
