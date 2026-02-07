@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package scm_users.v1;
+
+import "google/protobuf/timestamp.proto";
+
+service SCMUsersService {
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+}
+
+message ListUsersRequest {}
+
+message ListUsersResponse {
+  repeated User users = 1;
+}
+
+message GetUserRequest {
+  string id = 1;
+}
+
+message GetUserResponse {
+  User user = 1;
+}
+
+message CreateUserRequest {}
+
+message CreateUserResponse {
+  User user = 1;
+}
+
+message User {
+  string id = 1;
+  google.protobuf.Timestamp created_at = 2;
+  google.protobuf.Timestamp updated_at = 3;
+}

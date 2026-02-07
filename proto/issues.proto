@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+package issues.v1;
+
+import "auth.proto";
+import "google/protobuf/timestamp.proto";
+
+service IssuesService {
+  rpc ListIssues(ListIssuesRequest) returns (ListIssuesResponse);
+  rpc GetIssue(GetIssueRequest) returns (GetIssueResponse);
+  rpc ListIssuesByRepository(ListIssuesByRepositoryRequest) returns (ListIssuesByRepositoryResponse);
+  rpc ListIssuesByUser(ListIssuesByUserRequest) returns (ListIssuesByUserResponse);
+  rpc ListIssuesByRepositoryUser(ListIssuesByRepositoryUserRequest) returns (ListIssuesByRepositoryUserResponse);
+
+  rpc CreateIssue(CreateIssueRequest) returns (CreateIssueResponse);
+}
+
+message ListIssuesRequest {}
+
+message ListIssuesResponse {
+  repeated Issue issues = 1;
+}
+
+message GetIssueRequest {
+  string id = 1;
+}
+
+message GetIssueResponse {
+  Issue issue = 1;
+}
+
+message ListIssuesByRepositoryRequest {
+  string repository_id = 1;
+}
+
+message ListIssuesByRepositoryResponse {
+  repeated Issue issues = 1;
+}
+
+message ListIssuesByUserRequest {
+  string user_id = 1;
+}
+
+message ListIssuesByUserResponse {
+  repeated Issue issues = 1;
+}
+
+message ListIssuesByRepositoryUserRequest {
+  string repository_id = 1;
+  string user_id = 2;
+}
+
+message ListIssuesByRepositoryUserResponse {
+  repeated Issue issues = 1;
+}
+
+message CreateIssueRequest {
+  string title = 1;
+  optional string description = 2;
+  auth.v1.Provider provider = 3;
+  int64 external_id = 4;
+  int32 number = 5;
+  IssueState state = 6;
+  string repository_id = 7;
+  string author_id = 8;
+  google.protobuf.Timestamp created_at = 9;
+  optional google.protobuf.Timestamp closed_at = 10;
+}
+
+message CreateIssueResponse {
+  Issue issue = 1;
+}
+
+message Issue {
+  string id = 1;
+  string title = 2;
+  optional string description = 3;
+  auth.v1.Provider provider = 4;
+  int64 external_id = 5;
+  int32 number = 6;
+  IssueState state = 7;
+  string repository_id = 8;
+  string author_id = 9;
+  google.protobuf.Timestamp created_at = 10;
+  optional google.protobuf.Timestamp closed_at = 11;
+}
+
+enum IssueState {
+  ISSUE_STATE_UNSPECIFIED = 0;
+  ISSUE_STATE_OPEN = 1;
+  ISSUE_STATE_CLOSED = 2;
+}

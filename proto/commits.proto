@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package commits.v1;
+
+import "auth.proto";
+import "google/protobuf/timestamp.proto";
+
+service CommitsService {
+  rpc ListCommits(ListCommitsRequest) returns (ListCommitsResponse);
+  rpc GetCommit(GetCommitRequest) returns (GetCommitResponse);
+  rpc ListCommitsByRepository(ListCommitsByRepositoryRequest) returns (ListCommitsByRepositoryResponse);
+  rpc ListCommitsByUser(ListCommitsByUserRequest) returns (ListCommitsByUserResponse);
+  rpc ListCommitsByRepositoryUser(ListCommitsByRepositoryUserRequest) returns (ListCommitsByRepositoryUserResponse);
+
+  rpc CreateCommit(CreateCommitRequest) returns (CreateCommitResponse);
+}
+
+message ListCommitsRequest {}
+
+message ListCommitsResponse {
+  repeated Commit commits = 1;
+}
+
+message GetCommitRequest {
+  string id = 1;
+}
+
+message GetCommitResponse {
+  Commit commit = 1;
+}
+
+message ListCommitsByRepositoryRequest {
+  string repository_id = 1;
+}
+
+message ListCommitsByRepositoryResponse {
+  repeated Commit commits = 1;
+}
+
+message ListCommitsByUserRequest {
+  string user_id = 1;
+}
+
+message ListCommitsByUserResponse {
+  repeated Commit commits = 1;
+}
+
+message ListCommitsByRepositoryUserRequest {
+  string repository_id = 1;
+  string user_id = 2;
+}
+
+message ListCommitsByRepositoryUserResponse {
+  repeated Commit comiits = 1;
+}
+
+message CreateCommitRequest {
+  auth.v1.Provider provider = 1;
+  string sha = 2;
+  string repository_id = 3;
+  string author_id = 4;
+  string message = 5;
+  int32 additions = 6;
+  int32 deletions = 7;
+  google.protobuf.Timestamp commited_at = 8;
+}
+
+message CreateCommitResponse {
+  Commit commit = 1;
+}
+
+message Commit {
+  string id = 1;
+  auth.v1.Provider provider = 2;
+  string sha = 3;
+  string repository_id = 4;
+  string author_id = 5;
+  string message = 6;
+  int32 additions = 7;
+  int32 deletions = 8;
+  google.protobuf.Timestamp commited_at = 9;
+}

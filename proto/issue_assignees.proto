@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package issue_assignees.v1;
+
+import "google/protobuf/timestamp.proto";
+
+service IssueAssigneesService {
+  rpc ListIssueAssignees(ListIssueAssigneesRequest) returns (ListIssueAssigneesResponse);
+  rpc ListAssigneesByIssue(ListAssigneesByIssueRequest) returns (ListAssigneesByIssueResponse);
+  rpc ListAssigneesByUser(ListAssigneesByUserRequest) returns (ListAssigneesByUserResponse);
+  rpc ListAssigneesByRepository(ListAssigneesByRepositoryRequest) returns (ListAssigneesByRepositoryResponse);
+
+  rpc CreateIssueAssignee(CreateIssueAssigneeRequest) returns (CreateIssueAssigneeResponse);
+}
+
+message ListIssueAssigneesRequest {}
+
+message ListIssueAssigneesResponse {
+  repeated IssueAssignee assignees = 1;
+}
+
+message ListAssigneesByIssueRequest {
+  string issue_id = 1;
+}
+
+message ListAssigneesByIssueResponse {
+  repeated IssueAssignee assignees = 1;
+}
+
+message ListAssigneesByUserRequest {
+  string user_id = 1;
+}
+
+message ListAssigneesByUserResponse {
+  repeated IssueAssignee assignees = 1;
+}
+
+message ListAssigneesByRepositoryRequest {
+  string repository_id = 1;
+}
+
+message ListAssigneesByRepositoryResponse {
+  repeated IssueAssignee assignees = 1;
+}
+
+message CreateIssueAssigneeRequest {
+  string issue_id = 1;
+  string membership_id = 2;
+  google.protobuf.Timestamp assigned_at = 3;
+  optional google.protobuf.Timestamp unassigned_at = 4;
+}
+
+message CreateIssueAssigneeResponse {
+  IssueAssignee assignee = 1;
+}
+
+message IssueAssignee {
+  string issue_id = 1;
+  string membership_id = 2;
+  google.protobuf.Timestamp assigned_at = 3;
+  optional google.protobuf.Timestamp unassigned_at = 4;
+}

@@ -37,7 +37,7 @@ message ListOrganizationsByProviderResponse {
 
 message GetOrganizationByProviderIdRequest {
   auth.v1.Provider provider = 1;
-  string external_id = 2;
+  int64 external_id = 2;
 }
 
 message GetOrganizationByProviderIdResponse {
