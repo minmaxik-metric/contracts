@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package scm_users.v1;
 
+import "auth.proto";
 import "google/protobuf/timestamp.proto";
 
 service SCMUsersService {
@@ -25,7 +26,10 @@ message GetUserResponse {
   User user = 1;
 }
 
-message CreateUserRequest {}
+message CreateUserRequest {
+  auth.v1.Provider provider = 1;
+  int64 external_id = 2;
+}
 
 message CreateUserResponse {
   User user = 1;
@@ -33,6 +37,8 @@ message CreateUserResponse {
 
 message User {
   string id = 1;
-  google.protobuf.Timestamp created_at = 2;
-  google.protobuf.Timestamp updated_at = 3;
+  auth.v1.Provider provider = 2;
+  int64 external_id = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
 }
