@@ -1,6 +1,6 @@
 {
   "name": "@citec-spbu/contracts",
-  "version": "1.0.13",
+  "version": "1.0.15",
   "description": "Protobuf definitions and generated TypeScript types",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -15,8 +15,8 @@
     }
   },
   "scripts": {
-    "generate": "mkdir -p gen/ts && protoc -I ./proto ./proto/*.proto --ts_proto_out=./gen/ts --ts_proto_opt=nestJs=true,package=omit",
-    "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.gen.json"
+    "generate": "mkdir -p gen/ts && protoc -I ./proto ./proto/*.proto --ts_proto_out=./gen/ts --ts_proto_opt=nestJs=true,package=omit,enumsAsTypes=false",
+    "build": "tsc -p tsconfig.build.json"
   },
   "files": [
     "dist",
