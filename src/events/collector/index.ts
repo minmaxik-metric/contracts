@@ -1,1 +1,1 @@
-export * from "./raw-event-published.interface";
+export * from "./normalized-event-published.interface";

@@ -1,4 +1,4 @@
-interface _RawEventPublished<T = unknown, P = unknown> {
+interface _NormalizedEventPublished<T = unknown, P = unknown> {
   id: string;
   source: "github";
   type: T;
@@ -103,7 +103,6 @@ interface PullRequestCreatedPayload {
   createdAt: Date;
   updatedAt: Date;
   closedAt: Date | null;
-  closedBy: UserPayload | null;
 }
 
 interface PullRequestStateChangedEventPayload {
@@ -167,26 +166,43 @@ interface PullRequestCommentEventPayload {
   updatedAt: Date;
 }
 
-export type RawEventPublished =
-  | _RawEventPublished<"commit.created", CommitEventPayload>
-  | _RawEventPublished<"issue.created", IssueCreatedEventPayload>
-  | _RawEventPublished<"issue.state_changed", IssueStateChangedEventPayload>
-  | _RawEventPublished<"issue.assigned", IssueAssigneeEventPayload>
-  | _RawEventPublished<"issue.labeled", IssueLabelEventPayload>
-  | _RawEventPublished<"issue.commented", IssueCommentEventPayload>
-  | _RawEventPublished<"pull_request.created", PullRequestCreatedPayload>
-  | _RawEventPublished<
+export type NormalizedEventPublished =
+  | _NormalizedEventPublished<"commit.created", CommitEventPayload>
+  | _NormalizedEventPublished<"issue.created", IssueCreatedEventPayload>
+  | _NormalizedEventPublished<
+      "issue.state_changed",
+      IssueStateChangedEventPayload
+    >
+  | _NormalizedEventPublished<"issue.assigned", IssueAssigneeEventPayload>
+  | _NormalizedEventPublished<"issue.labeled", IssueLabelEventPayload>
+  | _NormalizedEventPublished<"issue.commented", IssueCommentEventPayload>
+  | _NormalizedEventPublished<"pull_request.created", PullRequestCreatedPayload>
+  | _NormalizedEventPublished<
       "pull_request.state_changed",
       PullRequestStateChangedEventPayload
     >
-  | _RawEventPublished<"pull_request.assigned", PullRequestAssigneeEventPayload>
-  | _RawEventPublished<"pull_request.labeled", PullRequestLabelEventPayload>
-  | _RawEventPublished<
+  | _NormalizedEventPublished<
+      "pull_request.assigned",
+      PullRequestAssigneeEventPayload
+    >
+  | _NormalizedEventPublished<
+      "pull_request.labeled",
+      PullRequestLabelEventPayload
+    >
+  | _NormalizedEventPublished<
       "pull_request.review_requested",
       PullRequestReviewRequestEventPayload
     >
-  | _RawEventPublished<"pull_request.reviewed", PullRequestReviewEventPayload>
-  | _RawEventPublished<
+  | _NormalizedEventPublished<
+      "pull_request.reviewed",
+      PullRequestReviewEventPayload
+    >
+  | _NormalizedEventPublished<
       "pull_request.commented",
       PullRequestCommentEventPayload
     >;
+
+export type ExtractEvent<T extends NormalizedEventPublished["type"]> = Extract<
+  NormalizedEventPublished,
+  { type: T }
+>;
