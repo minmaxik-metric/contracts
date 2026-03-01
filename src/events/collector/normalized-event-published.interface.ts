@@ -43,7 +43,7 @@ interface IssueCreatedEventPayload {
   author: UserPayload;
   title: string;
   description: string | null;
-  state: "open" | "closed";
+  state: "open" | "deleted";
   commentCount: number;
 
   createdAt: Date;
@@ -79,6 +79,16 @@ interface IssueLabelEventPayload {
   createdAt: Date;
 }
 
+interface IssueTypeEventPayload {
+  eventId: string;
+  issueId: string;
+  actor: UserPayload;
+  event: "typed" | "untyped";
+  type: string;
+
+  createdAt: Date;
+}
+
 interface IssueCommentEventPayload {
   eventId: string;
   issueId: string;
@@ -87,6 +97,7 @@ interface IssueCommentEventPayload {
   body: string;
 
   createdAt: Date;
+  updatedAt: Date;
 }
 
 interface PullRequestCreatedPayload {
@@ -126,7 +137,7 @@ interface PullRequestAssigneeEventPayload {
 
 interface PullRequestLabelEventPayload {
   eventId: string;
-  issueId: string;
+  prId: string;
   actor: UserPayload;
   event: "labeled" | "unlabeled";
   label: string;
@@ -175,6 +186,7 @@ export type NormalizedEventPublished =
     >
   | _NormalizedEventPublished<"issue.assigned", IssueAssigneeEventPayload>
   | _NormalizedEventPublished<"issue.labeled", IssueLabelEventPayload>
+  | _NormalizedEventPublished<"issue.typed", IssueTypeEventPayload>
   | _NormalizedEventPublished<"issue.commented", IssueCommentEventPayload>
   | _NormalizedEventPublished<"pull_request.created", PullRequestCreatedPayload>
   | _NormalizedEventPublished<
