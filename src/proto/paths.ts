@@ -16,4 +16,5 @@ export const PROTO_PATHS = {
   ISSUES_ASSIGNEES: join(__dirname, "../../proto/issue_assignees.proto"),
   PULL_REQUESTS: join(__dirname, "../../proto/pull_requests.proto"),
   COMMITS: join(__dirname, "../../proto/commits.proto"),
+  ANALYTICS: join(__dirname, "../../proto/analytics.proto"),
 } as const;

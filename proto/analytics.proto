@@ -1,0 +1,160 @@
+syntax = "proto3";
+
+package analytics.v1;
+
+service AnalyticsService {
+  rpc GetUserRatings(GetUserRatingsRequest) returns (GetUserRatingsResponse);
+  rpc GetRepositoryRatings(GetRepositoryRatingsRequest) returns (GetRepositoryRatingsResponse);
+  rpc ListScoringProfiles(ListScoringProfilesRequest) returns (ListScoringProfilesResponse);
+  rpc GetDefaultScoringProfile(GetDefaultScoringProfileRequest) returns (ScoringProfileResponse);
+  rpc UpsertScoringProfile(UpsertScoringProfileRequest) returns (ScoringProfileResponse);
+}
+
+enum RatingPeriod {
+  RATING_PERIOD_UNSPECIFIED = 0;
+  RATING_PERIOD_DAILY = 1;
+  RATING_PERIOD_WEEKLY = 2;
+}
+
+enum RatingSubjectType {
+  RATING_SUBJECT_TYPE_UNSPECIFIED = 0;
+  RATING_SUBJECT_TYPE_USER = 1;
+  RATING_SUBJECT_TYPE_REPOSITORY = 2;
+}
+
+enum ScoringProfileStatus {
+  SCORING_PROFILE_STATUS_UNSPECIFIED = 0;
+  SCORING_PROFILE_STATUS_ACTIVE = 1;
+  SCORING_PROFILE_STATUS_ARCHIVED = 2;
+}
+
+message GetUserRatingsRequest {
+  string organization_id = 1;
+  string repository_id = 2;
+  RatingPeriod period = 3;
+  string bucket = 4;
+  int32 limit = 5;
+  repeated ScoreWeight weights = 6;
+}
+
+message GetUserRatingsResponse {
+  string bucket = 1;
+  repeated UserRating ratings = 2;
+}
+
+message UserRating {
+  string contributor_id = 1;
+  string contributor_login = 2;
+  int64 events_total = 3;
+  int64 event_types_covered_count = 4;
+  int64 active_days_count = 5;
+  double activity_consistency_score = 6;
+  double activity_share_in_team = 7;
+  double score = 8;
+  int32 rank = 9;
+  repeated ScoreComponent score_components = 10;
+  double activity_score = 11;
+  double productivity_score = 12;
+  double communication_score = 13;
+  double quality_score = 14;
+  double flow_score = 15;
+  double repository_health_score = 16;
+}
+
+message GetRepositoryRatingsRequest {
+  string organization_id = 1;
+  RatingPeriod period = 2;
+  string bucket = 3;
+  int32 limit = 4;
+  repeated ScoreWeight weights = 5;
+}
+
+message GetRepositoryRatingsResponse {
+  string bucket = 1;
+  repeated RepositoryRating ratings = 2;
+}
+
+message RepositoryRating {
+  string repository_id = 1;
+  string repository_name = 2;
+  string repository_url = 3;
+  int64 events_total = 4;
+  int64 active_contributors_count = 5;
+  double events_per_active_contributor = 6;
+  int64 contributors_with_commits_count = 7;
+  int64 contributors_with_reviews_count = 8;
+  int64 event_types_covered_count = 9;
+  int64 active_days_count = 10;
+  double activity_consistency_score = 11;
+  double score = 12;
+  int32 rank = 13;
+  repeated ScoreComponent score_components = 14;
+  double activity_score = 15;
+  double productivity_score = 16;
+  double communication_score = 17;
+  double quality_score = 18;
+  double flow_score = 19;
+  double repository_health_score = 20;
+}
+
+message ScoreWeight {
+  string metric = 1;
+  double weight = 2;
+}
+
+message MetricOptimalRange {
+  string metric = 1;
+  double min = 2;
+  double max = 3;
+}
+
+message ScoreComponent {
+  string metric = 1;
+  string category = 2;
+  double raw_value = 3;
+  double normalized_value = 4;
+  double weight = 5;
+  double weighted_score = 6;
+  string direction = 7;
+}
+
+message ListScoringProfilesRequest {
+  RatingSubjectType subject_type = 1;
+  bool include_archived = 2;
+}
+
+message ListScoringProfilesResponse {
+  repeated ScoringProfile profiles = 1;
+}
+
+message GetDefaultScoringProfileRequest {
+  RatingSubjectType subject_type = 1;
+}
+
+message UpsertScoringProfileRequest {
+  string id = 1;
+  string name = 2;
+  RatingSubjectType subject_type = 3;
+  string algorithm_version = 4;
+  repeated ScoreWeight category_weights = 5;
+  repeated ScoreWeight metric_weights = 6;
+  repeated MetricOptimalRange optimal_ranges = 7;
+  bool is_default = 8;
+  ScoringProfileStatus status = 9;
+}
+
+message ScoringProfileResponse {
+  ScoringProfile profile = 1;
+}
+
+message ScoringProfile {
+  string id = 1;
+  string name = 2;
+  RatingSubjectType subject_type = 3;
+  string algorithm_version = 4;
+  repeated ScoreWeight category_weights = 5;
+  repeated ScoreWeight metric_weights = 6;
+  repeated MetricOptimalRange optimal_ranges = 7;
+  bool is_default = 8;
+  ScoringProfileStatus status = 9;
+}
