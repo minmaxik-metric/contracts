@@ -4,6 +4,9 @@ package account.v1;
 
 service AccountService {
   rpc GetAccount(GetAccountRequest) returns (GetAccountResponse);
+  rpc RegisterSupervisorOrganization(RegisterSupervisorOrganizationRequest) returns (RegisterSupervisorOrganizationResponse);
+  rpc ListSupervisorOrganizations(ListSupervisorOrganizationsRequest) returns (ListSupervisorOrganizationsResponse);
+  rpc AddSupervisorToPool(AddSupervisorToPoolRequest) returns (AddSupervisorToPoolResponse);
 }
 
 message GetAccountRequest {
@@ -13,6 +16,40 @@ message GetAccountRequest {
 message GetAccountResponse {
   string id = 1;
   Role role = 2;
+}
+
+message RegisterSupervisorOrganizationRequest {
+  string supervisor_provider_id = 1;
+  string organization_external_id = 2;
+  string organization_login = 3;
+  string organization_url = 4;
+}
+
+message RegisterSupervisorOrganizationResponse {
+  bool ok = 1;
+}
+
+message ListSupervisorOrganizationsRequest {
+  string account_id = 1;
+}
+
+message ListSupervisorOrganizationsResponse {
+  repeated SupervisorOrganization organizations = 1;
+}
+
+message SupervisorOrganization {
+  string external_id = 1;
+  string login = 2;
+  string url = 3;
+}
+
+message AddSupervisorToPoolRequest {
+  string owner_account_id = 1;
+  string supervisor_account_id = 2;
+}
+
+message AddSupervisorToPoolResponse {
+  bool ok = 1;
 }
 
 enum Role {

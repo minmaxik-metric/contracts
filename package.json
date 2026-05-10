@@ -1,6 +1,6 @@
 {
   "name": "@citec-spbu/contracts",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "description": "Protobuf definitions and generated TypeScript types",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
