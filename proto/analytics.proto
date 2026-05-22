@@ -5,6 +5,7 @@ package analytics.v1;
 service AnalyticsService {
   rpc GetUserRatings(GetUserRatingsRequest) returns (GetUserRatingsResponse);
   rpc GetRepositoryRatings(GetRepositoryRatingsRequest) returns (GetRepositoryRatingsResponse);
+  rpc ListSemesters(ListSemestersRequest) returns (ListSemestersResponse);
   rpc ListScoringProfiles(ListScoringProfilesRequest) returns (ListScoringProfilesResponse);
   rpc GetDefaultScoringProfile(GetDefaultScoringProfileRequest) returns (ScoringProfileResponse);
   rpc UpsertScoringProfile(UpsertScoringProfileRequest) returns (ScoringProfileResponse);
@@ -95,6 +96,24 @@ message RepositoryRating {
   double quality_score = 18;
   double flow_score = 19;
   double repository_health_score = 20;
+}
+
+message ListSemestersRequest {
+  string organization_id = 1;
+  string repository_id = 2;
+  int32 limit = 3;
+}
+
+message ListSemestersResponse {
+  repeated Semester semesters = 1;
+}
+
+message Semester {
+  string semester = 1;
+  int32 year = 2;
+  string label = 3;
+  string date_from = 4;
+  string date_to = 5;
 }
 
 message ScoreWeight {
