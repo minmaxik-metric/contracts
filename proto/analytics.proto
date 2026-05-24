@@ -9,6 +9,7 @@ service AnalyticsService {
   rpc ListScoringProfiles(ListScoringProfilesRequest) returns (ListScoringProfilesResponse);
   rpc GetDefaultScoringProfile(GetDefaultScoringProfileRequest) returns (ScoringProfileResponse);
   rpc UpsertScoringProfile(UpsertScoringProfileRequest) returns (ScoringProfileResponse);
+  rpc ListMetricMetadata(ListMetricMetadataRequest) returns (ListMetricMetadataResponse);
 }
 
 enum RatingPeriod {
@@ -135,6 +136,20 @@ message ScoreComponent {
   double weight = 5;
   double weighted_score = 6;
   string direction = 7;
+  string label = 8;
+  string description = 9;
+}
+
+message ListMetricMetadataRequest {}
+
+message ListMetricMetadataResponse {
+  repeated MetricMetadata metrics = 1;
+}
+
+message MetricMetadata {
+  string metric = 1;
+  string label = 2;
+  string description = 3;
 }
 
 message ListScoringProfilesRequest {

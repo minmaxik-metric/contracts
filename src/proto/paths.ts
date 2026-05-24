@@ -1,20 +1,21 @@
+import { existsSync } from "node:fs";
 import { join } from "node:path";
 
+const protoRootCandidates = [
+  join(__dirname, "../../../proto/"),
+  join(__dirname, "../../proto/"),
+];
+
+const protoRoot =
+  protoRootCandidates.find((candidate) => existsSync(candidate)) ??
+  protoRootCandidates[0];
+
+const protoPath = (filename: string) => join(protoRoot, filename);
+
 export const PROTO_PATHS = {
-  ROOT: join(__dirname, "../../proto/"),
-  AUTH: join(__dirname, "../../proto/auth.proto"),
-  ACCOUNT: join(__dirname, "../../proto/account.proto"),
-  USERS: join(__dirname, "../../proto/users.proto"),
-  ORGANIZATIONS: join(__dirname, "../../proto/organizations.proto"),
-  REPOSITORIES: join(__dirname, "../../proto/repositories.proto"),
-  SCM_USERS: join(__dirname, "../../proto/scm_users.proto"),
-  REPOSITORY_MEMBERSHIPS: join(
-    __dirname,
-    "../../proto/repository_memberships.proto",
-  ),
-  ISSUES: join(__dirname, "../../proto/issues.proto"),
-  ISSUES_ASSIGNEES: join(__dirname, "../../proto/issue_assignees.proto"),
-  PULL_REQUESTS: join(__dirname, "../../proto/pull_requests.proto"),
-  COMMITS: join(__dirname, "../../proto/commits.proto"),
-  ANALYTICS: join(__dirname, "../../proto/analytics.proto"),
+  ROOT: protoRoot,
+  AUTH: protoPath("auth.proto"),
+  ACCOUNT: protoPath("account.proto"),
+  USERS: protoPath("users.proto"),
+  ANALYTICS: protoPath("analytics.proto"),
 } as const;
